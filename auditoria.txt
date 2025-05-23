@@ -1,0 +1,301 @@
+# Guía Completa: Rastrear Mensajes de Teams con Graph Explorer
+
+## Paso 1: Obtener IDs de usuarios desde correos electrónicos
+
+### 1.1 Buscar usuario por email
+```
+GET /users/{email-address}
+```
+
+**Ejemplo práctico:**
+```
+GET /users/juan.perez@empresa.com
+GET /users/maria.garcia@empresa.com
+```
+
+**Respuesta esperada:**
+```json
+{
+    "id": "12345678-abcd-1234-5678-123456789012",
+    "displayName": "Juan Pérez",
+    "mail": "juan.perez@empresa.com",
+    "userPrincipalName": "juan.perez@empresa.com"
+}
+```
+
+### 1.2 Búsqueda alternativa si no conoces el email exacto
+```
+GET /users?$filter=startswith(mail,'juan.perez')
+GET /users?$filter=startswith(displayName,'Juan Pérez')
+```
+
+## Paso 2: Identificar si es un chat directo o un canal
+
+### 2.1 Buscar chats donde participan ambos usuarios
+```
+GET /me/chats?$expand=members
+```
+
+**O si eres administrador:**
+```
+GET /users/{user-id}/chats?$expand=members
+```
+
+### 2.2 Filtrar chats que contengan ambos usuarios
+En la respuesta, busca chats donde aparezcan los IDs de ambos usuarios en la sección `members`.
+
+## Paso 3: Si es un chat directo
+
+### 3.1 Obtener el chat-id
+Una vez identificado el chat correcto, usa su `id`:
+```json
+{
+    "id": "19:2da4c29f6d7041eca70b638b43d45437@thread.v2",
+    "topic": null,
+    "createdDateTime": "2024-01-15T10:00:00Z",
+    "chatType": "oneOnOne",
+    "members": [...]
+}
+```
+
+### 3.2 Buscar mensajes en el chat
+```
+GET /chats/19:2da4c29f6d7041eca70b638b43d45437@thread.v2/messages
+```
+
+### 3.3 Filtrar por remitente específico
+```
+GET /chats/{chat-id}/messages?$filter=from/user/id eq '{sender-user-id}'
+```
+
+### 3.4 Filtrar por fecha (si conoces aproximadamente cuándo se envió)
+```
+GET /chats/{chat-id}/messages?$filter=createdDateTime ge 2024-01-15T00:00:00Z and createdDateTime le 2024-01-16T00:00:00Z
+```
+
+## Paso 4: Si es un mensaje en canal de equipo
+
+### 4.1 Obtener todos los equipos donde participa el usuario
+```
+GET /users/{sender-user-id}/joinedTeams
+```
+
+### 4.2 Para cada equipo, obtener los canales
+```
+GET /teams/{team-id}/channels
+```
+
+**Ejemplo de respuesta:**
+```json
+{
+    "value": [
+        {
+            "id": "19:abc123def456ghi789@thread.tacv2",
+            "displayName": "General",
+            "description": "Canal general del equipo"
+        }
+    ]
+}
+```
+
+### 4.3 Buscar mensajes en cada canal
+```
+GET /teams/{team-id}/channels/{channel-id}/messages
+```
+
+### 4.4 Filtrar por remitente
+```
+GET /teams/{team-id}/channels/{channel-id}/messages?$filter=from/user/id eq '{sender-user-id}'
+```
+
+## Paso 5: Búsqueda exhaustiva de mensajes
+
+### 5.1 Script completo de búsqueda en Graph Explorer
+
+**Paso a paso en Graph Explorer:**
+
+1. **Obtener ID del remitente:**
+```
+GET /users/remitente@empresa.com
+```
+
+2. **Obtener ID del destinatario:**
+```
+GET /users/destinatario@empresa.com
+```
+
+3. **Buscar todos los chats del remitente:**
+```
+GET /users/12345678-abcd-1234-5678-123456789012/chats?$expand=members
+```
+
+4. **Para cada chat encontrado, buscar mensajes:**
+```
+GET /chats/{chat-id}/messages?$filter=from/user/id eq '12345678-abcd-1234-5678-123456789012'
+```
+
+5. **Si no encuentras en chats, buscar en equipos:**
+```
+GET /users/12345678-abcd-1234-5678-123456789012/joinedTeams
+```
+
+6. **Para cada equipo, obtener canales:**
+```
+GET /teams/{team-id}/channels
+```
+
+7. **Buscar mensajes en canales:**
+```
+GET /teams/{team-id}/channels/{channel-id}/messages?$filter=from/user/id eq '12345678-abcd-1234-5678-123456789012'
+```
+
+## Paso 6: Análisis detallado del mensaje encontrado
+
+### 6.1 Obtener detalles completos del mensaje
+```
+GET /chats/{chat-id}/messages/{message-id}
+```
+**O**
+```
+GET /teams/{team-id}/channels/{channel-id}/messages/{message-id}
+```
+
+### 6.2 Verificar si fue editado
+**Campos clave a revisar:**
+- `createdDateTime`: Fecha original
+- `lastModifiedDateTime`: Última modificación
+- `lastEditedDateTime`: Específicamente cuando fue editado
+
+**Ejemplo de mensaje editado:**
+```json
+{
+    "id": "1578662867081",
+    "createdDateTime": "2024-01-15T10:30:00.000Z",
+    "lastModifiedDateTime": "2024-01-15T11:15:00.000Z",
+    "lastEditedDateTime": "2024-01-15T11:15:00.000Z",
+    "from": {
+        "user": {
+            "id": "12345678-abcd-1234-5678-123456789012",
+            "displayName": "Juan Pérez"
+        }
+    },
+    "body": {
+        "content": "Mensaje editado ✏️"
+    }
+}
+```
+
+### 6.3 Verificar estado de lectura (solo en chats)
+```
+GET /chats/{chat-id}/members
+```
+
+**Para ver actividad de lectura:**
+```
+GET /chats/{chat-id}/messages/{message-id}?$expand=replies
+```
+
+## Paso 7: Consultas avanzadas de búsqueda
+
+### 7.1 Buscar por contenido del mensaje
+```
+GET /chats/{chat-id}/messages?$search="palabra clave"
+```
+
+### 7.2 Buscar por rango de fechas
+```
+GET /chats/{chat-id}/messages?$filter=createdDateTime ge 2024-01-01T00:00:00Z and createdDateTime le 2024-01-31T23:59:59Z
+```
+
+### 7.3 Buscar mensajes editados específicamente
+```
+GET /chats/{chat-id}/messages?$filter=lastEditedDateTime ne null
+```
+
+### 7.4 Obtener mensajes con archivos adjuntos
+```
+GET /chats/{chat-id}/messages?$filter=attachments/any()
+```
+
+## Paso 8: Automatización con múltiples consultas
+
+### 8.1 Secuencia de comandos para Graph Explorer
+
+```javascript
+// 1. Obtener usuarios
+GET /users/remitente@empresa.com
+// Guarda el ID: sender-id
+
+GET /users/destinatario@empresa.com  
+// Guarda el ID: recipient-id
+
+// 2. Buscar chats comunes
+GET /users/{sender-id}/chats?$expand=members&$filter=members/any(m: m/userId eq '{recipient-id}')
+
+// 3. Para cada chat encontrado
+GET /chats/{chat-id}/messages?$filter=from/user/id eq '{sender-id}'&$orderby=createdDateTime desc
+
+// 4. Si no hay resultados, buscar en equipos
+GET /users/{sender-id}/joinedTeams
+
+// 5. Para cada equipo
+GET /teams/{team-id}/channels
+
+// 6. Para cada canal
+GET /teams/{team-id}/channels/{channel-id}/messages?$filter=from/user/id eq '{sender-id}'
+```
+
+## Paso 9: Identificadores importantes
+
+### 9.1 Formato de IDs comunes
+- **User ID**: `12345678-abcd-1234-5678-123456789012`
+- **Team ID**: `12345678-1234-1234-1234-123456789012`
+- **Channel ID**: `19:abc123def456ghi789@thread.tacv2`
+- **Chat ID**: `19:2da4c29f6d7041eca70b638b43d45437@thread.v2`
+- **Message ID**: `1578662867081`
+
+### 9.2 Diferencias entre tipos de chat
+- **Chat 1:1**: `chatType: "oneOnOne"`
+- **Chat grupal**: `chatType: "group"`
+- **Canal de equipo**: Mensaje dentro de `/teams/{id}/channels/{id}`
+
+## Paso 10: Permisos necesarios
+
+### 10.1 Permisos mínimos requeridos
+- `User.Read.All` - Para obtener información de usuarios
+- `Chat.Read` o `Chat.ReadWrite.All` - Para leer chats
+- `ChannelMessage.Read.All` - Para leer mensajes de canales
+- `Team.ReadBasic.All` - Para información básica de equipos
+
+### 10.2 Configurar permisos en Graph Explorer
+1. Ve a https://developer.microsoft.com/graph/graph-explorer
+2. Haz clic en "Modify permissions"
+3. Busca y activa los permisos listados arriba
+4. Acepta cuando te pida consentimiento de administrador
+
+## Ejemplo práctico completo
+
+### Escenario: 
+- Remitente: `juan.perez@empresa.com`
+- Destinatario: `maria.garcia@empresa.com`
+- Fecha aproximada: 15 de enero de 2024
+
+### Secuencia de consultas:
+
+```
+1. GET /users/juan.perez@empresa.com
+   → ID: aa123456-bb78-cc90-dd12-ee3456789012
+
+2. GET /users/maria.garcia@empresa.com  
+   → ID: ff789012-gg34-hh56-ii78-jj9012345678
+
+3. GET /users/aa123456-bb78-cc90-dd12-ee3456789012/chats?$expand=members
+   → Buscar chat que contenga ambos IDs
+
+4. GET /chats/19:2da4c29f6d7041eca70b638b43d45437@thread.v2/messages?$filter=from/user/id eq 'aa123456-bb78-cc90-dd12-ee3456789012' and createdDateTime ge 2024-01-15T00:00:00Z
+
+5. Para el mensaje encontrado:
+   GET /chats/19:2da4c29f6d7041eca70b638b43d45437@thread.v2/messages/1578662867081
+```
+
+Con esta guía paso a paso deberías poder localizar cualquier mensaje específico partiendo únicamente de los correos electrónicos.

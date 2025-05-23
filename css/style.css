@@ -1,0 +1,473 @@
+/* Estilos generales para el cuerpo de la página */
+body {
+    font-family: 'Inter', sans-serif; /* Fuente Inter para un look moderno */
+    line-height: 1.6; /* Espaciado de línea para mejor legibilidad */
+    margin: 0; /* Eliminar margen por defecto del body */
+    padding: 0; /* Sin relleno por defecto */
+    color: #333; /* Color de texto principal */
+    background-color: #f8f9fa; /* Fondo de color suave, similar al sitio de referencia */
+}
+
+/* Estilos para el encabezado principal */
+.main-header {
+    background-color: #1a2c42; /* Azul oscuro, similar al header de la web de referencia */
+    color: white; /* Texto blanco */
+    padding: 20px 0; /* Relleno superior e inferior */
+    text-align: center; /* Centrar contenido */
+    margin-bottom: 30px; /* Margen inferior para separar del contenido */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.main-header h1 {
+    color: white; /* Título principal en blanco */
+    margin-top: 10px; /* Espacio entre logo y título */
+    margin-bottom: 0; /* Eliminar margen inferior del h1 dentro del header */
+    padding-bottom: 0; /* Eliminar padding inferior del h1 */
+    border-bottom: none; /* Eliminar borde inferior del h1 */
+    font-size: 2.2em; /* Tamaño de fuente para el título principal */
+}
+
+/* Placeholder para el logo */
+.logo-placeholder {
+    margin-bottom: 10px; /* Espacio debajo del logo */
+}
+
+.company-logo {
+    max-width: 150px; /* Ancho máximo para el logo */
+    height: auto; /* Altura automática para mantener la proporción */
+    border-radius: 5px; /* Bordes ligeramente redondeados para el placeholder */
+}
+
+/* Contenedor principal para el contenido de la página */
+body > div:not(.main-header):not(.modal) {
+    max-width: 1200px; /* Ancho máximo del contenido */
+    margin: 0 auto 30px auto; /* Centrar y añadir margen inferior */
+    padding: 0 20px; /* Relleno lateral */
+}
+
+/* Estilos para los títulos de sección */
+h2, h3 {
+    color: #1a2c42; /* Color oscuro para los títulos, similar al header */
+    margin-top: 25px; /* Reducido de 30px a 25px para mayor compacidad */
+    margin-bottom: 15px; /* Margen inferior para separar del contenido */
+}
+
+/* Estilo específico para los títulos de subsección */
+h2 {
+    border-bottom: 1px solid #e0e0e0; /* Borde inferior más ligero */
+    padding-bottom: 10px; /* Relleno inferior */
+    margin-top: 25px; /* Reducido de 40px a 25px para secciones principales */
+}
+
+/* Estilos para todas las tablas */
+table {
+    border-collapse: collapse; /* Colapsar bordes de celda */
+    width: 100%; /* Ancho completo */
+    margin-bottom: 25px; /* Margen inferior para separar de otros elementos */
+    background-color: #fff; /* Fondo blanco para las tablas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra más sutil */
+    border-radius: 8px; /* Bordes ligeramente más redondeados */
+    overflow: hidden; /* Ocultar contenido que se desborde, útil con border-radius */
+    display: block; /* Para responsividad en tablas grandes */
+    overflow-x: auto; /* Desplazamiento horizontal si es necesario */
+    white-space: nowrap; /* Evita que el contenido de las celdas se envuelva */
+    table-layout: fixed; /* Ayuda a que las columnas respeten los anchos definidos */
+}
+
+/* Estilos para celdas de encabezado y datos */
+th, td {
+    border: 1px solid #eee; /* Borde más claro para las celdas */
+    padding: 8px; /* Relleno interno */
+    text-align: left; /* Alineación de texto a la izquierda por defecto */
+    white-space: normal; /* Permite que el texto se envuelva dentro de las celdas */
+    vertical-align: top; /* Alinea el contenido de la celda en la parte superior */
+}
+
+/* Estilos específicos para las celdas de encabezado */
+th {
+    background-color: #007bff; /* Azul vibrante, similar a los acentos de la web de referencia */
+    color: white; /* Texto blanco en encabezados */
+    font-weight: 600; /* Semi-negrita */
+    text-align: center; /* Centrar texto en encabezados */
+}
+
+/* Anchos específicos para las columnas de las tablas de evaluación */
+th.col-criterio { width: 35%; } /* Criterio puede ser más ancho */
+th.col-peso { width: 80px; } /* Peso fijo y pequeño */
+th.col-calificacion { width: 120px; } /* Calificación con checkbox */
+th.col-ponderado { width: 80px; } /* Ponderado fijo y pequeño */
+th.col-observaciones { width: auto; } /* Observaciones toma el resto */
+
+
+/* Estilos para filas pares (para un efecto de cebra) */
+tr:nth-child(even) {
+    background-color: #f8f8f8; /* Fondo gris claro para filas pares */
+}
+
+/* Estilo al pasar el ratón por encima de las filas */
+tr:hover {
+    background-color: #eaf6ff; /* Cambio de color al pasar el ratón, un azul muy claro */
+}
+
+/* Estilos para las filas de resultados (subtotales y total) */
+.resultado {
+    font-weight: bold; /* Texto en negrita */
+    background-color: #e9ecef !important; /* Fondo ligeramente más oscuro para resultados */
+}
+
+/* Estilo específico para las celdas de subtotal */
+.subtotal {
+    font-weight: bold; /* Texto en negrita */
+    color: #1a2c42; /* Color oscuro para el texto */
+}
+
+/* Estilos para inputs de texto, número, fecha y selectores */
+input[type="text"], 
+input[type="number"], 
+input[type="date"],
+select {
+    width: 100%; /* Ancho completo del contenedor */
+    padding: 8px; /* Relleno interno */
+    box-sizing: border-box; /* Incluir padding y border en el ancho */
+    border: 1px solid #ccc; /* Borde más suave */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 14px; /* Tamaño de fuente */
+}
+
+/* Alineación de texto para inputs numéricos */
+input[type="number"] {
+    text-align: center; /* Centrar el texto numérico */
+}
+
+/* Estilo específico para inputs de calificación */
+input[type="number"].calificacion {
+    width: 50px; /* Ligeramente más pequeño de 60px a 50px */
+    margin: 0; /* Eliminar margen para mayor compacidad */
+    display: inline-block; /* Permitir que otros elementos estén a su lado */
+    font-weight: bold; /* Texto en negrita */
+    font-size: 16px; /* Tamaño de fuente más grande */
+}
+
+/* Estilos para textareas */
+textarea {
+    width: 100%; /* Ancho completo */
+    padding: 10px; /* Relleno interno */
+    box-sizing: border-box; /* Incluir padding y border en el ancho */
+    border: 1px solid #ccc; /* Borde más suave */
+    border-radius: 4px; /* Bordes redondeados */
+    resize: vertical; /* Permitir redimensionamiento vertical */
+    font-family: inherit; /* Heredar la fuente del cuerpo */
+    font-size: 14px; /* Tamaño de fuente */
+    min-height: 80px; /* Ligeramente reducido de 100px a 80px */
+}
+
+/* Contenedor para el input de calificación y el checkbox N/A */
+.calificacion-container {
+    display: flex; /* Usar flexbox */
+    flex-direction: row; /* Elementos en fila para ahorrar espacio */
+    justify-content: center; /* Centrar elementos horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    gap: 5px; /* Espacio entre input y checkbox */
+    height: 100%; /* Asegurar que ocupe la altura de la celda */
+}
+
+/* Contenedor para el checkbox "No Aplicable" */
+.na-container {
+    margin-top: 0; /* Eliminar margen superior */
+    margin-left: 5px; /* Espacio a la izquierda del checkbox */
+    white-space: nowrap; /* Evitar que el texto "N/A" se envuelva */
+    font-size: 0.85em; /* Tamaño de fuente más pequeño para N/A */
+}
+
+/* Estilo para filas marcadas como N/A */
+.na-row {
+    background-color: #f0f0f0 !important; /* Fondo más claro y prioridad alta */
+    color: #777; /* Color de texto atenuado */
+    font-style: italic; /* Texto en cursiva */
+}
+
+/* Estilos generales para botones */
+.btn {
+    background-color: #007bff; /* Fondo azul, similar al de la web de referencia */
+    color: white; /* Texto blanco */
+    padding: 10px 15px; /* Relleno interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero al pasar el ratón */
+    margin: 5px; /* Margen entre botones */
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+    font-weight: 600; /* Semi-negrita */
+    font-size: 1em; /* Tamaño de fuente */
+}
+
+/* Estilo al pasar el ratón por encima de los botones */
+.btn:hover {
+    background-color: #0056b3; /* Color azul más oscuro al pasar el ratón */
+}
+
+/* Estilo específico para el botón de exportar */
+.btn-export {
+    background-color: #28a745; /* Fondo verde para exportar */
+}
+
+/* Estilo al pasar el ratón por encima del botón de exportar */
+.btn-export:hover {
+    background-color: #218838; /* Color verde más oscuro al pasar el ratón */
+}
+
+/* Contenedor para los botones de acción */
+.botones-accion {
+    margin-top: 30px; /* Margen superior */
+    text-align: center; /* Centrar los botones */
+    padding: 15px; /* Relleno interno */
+    background-color: #e9ecef; /* Fondo claro */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Estilos para el texto de ayuda/instrucciones */
+.help-text {
+    margin: 20px auto; /* Margen superior e inferior, centrado */
+    padding: 15px; /* Relleno interno */
+    background-color: #eaf6ff; /* Fondo azul muy claro */
+    border-left: 4px solid #007bff; /* Borde izquierdo azul */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 0.9em; /* Tamaño de fuente ligeramente más pequeño */
+    max-width: 1200px; /* Asegurar que el ancho coincida con el contenido principal */
+    box-sizing: border-box; /* Incluir padding en el ancho */
+}
+
+/* Contenedor para las guías de calificación */
+.guias-container {
+    max-height: 500px; /* Altura máxima para permitir desplazamiento */
+    overflow-y: auto; /* Habilitar desplazamiento vertical si el contenido excede la altura */
+    border: 1px solid #ddd; /* Borde delgado */
+    padding: 20px; /* Relleno interno */
+    margin-bottom: 30px; /* Margen inferior */
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+/* Estilos específicos para las tablas dentro de las guías de calificación */
+.guias-container table th, .guias-container table td {
+    font-size: 0.8em; /* Ligeramente más pequeño */
+    padding: 5px; /* Reducir padding en guías */
+    white-space: normal; /* Asegurar que el texto se envuelva */
+}
+
+/* Flexbox para contenedores lado a lado (ej. SLA y Estadísticas de Tickets) */
+.flex-container {
+    display: flex; /* Habilitar flexbox */
+    gap: 20px; /* Espacio entre los elementos flex */
+    margin-bottom: 20px; /* Margen inferior */
+    flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas pequeñas */
+}
+
+/* Elementos individuales dentro del flex container */
+.flex-item {
+    flex: 1; /* Ocupar el espacio disponible equitativamente */
+    min-width: 45%; /* Ancho mínimo para que quepan dos en una fila en pantallas medianas */
+    box-sizing: border-box; /* Incluir padding y border en el ancho */
+}
+
+/* Asegurar que las tablas dentro de flex-item no se desborden */
+.flex-item table {
+    width: 100%;
+    table-layout: auto; /* Permitir que las columnas se ajusten automáticamente si es necesario */
+}
+
+/* Estilos para el modal (ventana emergente) */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija en la ventana */
+    top: 0; /* Arriba del todo */
+    left: 0; /* A la izquierda del todo */
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Altura completa */
+    background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
+    z-index: 1000; /* Asegurar que esté por encima de otros elementos */
+    /* display: flex;  ELIMINADO: Esto causaba que el modal se mostrara por defecto */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+/* Clase para mostrar el modal */
+.modal.active {
+    display: flex; /* Mostrar el modal cuando tenga la clase 'active' */
+}
+
+/* Contenido del modal */
+.modal-content {
+    position: relative; /* Para posicionar el botón de cerrar */
+    width: 90%; /* Ancho del contenido del modal */
+    max-width: 700px; /* Ancho máximo */
+    background: white; /* Fondo blanco */
+    padding: 30px; /* Relleno interno */
+    border-radius: 8px; /* Bordes redondeados */
+    max-height: 90vh; /* Altura máxima del modal */
+    overflow-y: auto; /* Habilitar desplazamiento si el contenido es largo */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra para el modal */
+}
+
+/* Botón de cerrar el modal */
+.cerrar-modal {
+    position: absolute; /* Posición absoluta dentro del modal-content */
+    right: 15px; /* A 15px del borde derecho */
+    top: 10px; /* A 10px del borde superior */
+    font-size: 28px; /* Tamaño de fuente grande */
+    cursor: pointer; /* Cursor de puntero */
+    color: #777; /* Color gris */
+}
+
+/* Estilo al pasar el ratón por encima del botón de cerrar */
+.cerrar-modal:hover {
+    color: #000; /* Color negro al pasar el ratón */
+}
+
+/* Estilo para el selector de criterios en el modal */
+#criterio-select {
+    width: 100%; /* Ancho completo */
+    padding: 10px; /* Relleno */
+    margin: 15px 0; /* Margen superior e inferior */
+    border-radius: 4px; /* Bordes redondeados */
+    border: 1px solid #ddd; /* Borde delgado */
+}
+
+/* Contenedor del formulario dentro del modal */
+#calc-form {
+    margin-top: 20px; /* Margen superior */
+}
+
+/* Contenedor del resultado de la calculadora */
+.resultado-calc {
+    margin-top: 25px; /* Margen superior */
+}
+
+/* Estilo para el área de resultado de la calculadora */
+#calc-resultado {
+    padding: 15px; /* Relleno */
+    background: #e9ecef; /* Fondo claro */
+    border-radius: 5px; /* Bordes redondeados */
+    border-left: 44px solid #007bff; /* Borde izquierdo azul */
+    margin-bottom: 20px; /* Margen inferior */
+}
+
+/* Resaltado para la calificación total y global */
+#total-ponderado, #calificacion-global {
+    font-size: 1.5em; /* Tamaño de fuente más grande */
+    font-weight: 700; /* Más negrita */
+    color: #dc3545; /* Rojo para destacar el resultado final */
+}
+
+/* Sección de Observaciones Generales y Plan de Acción */
+.observaciones {
+    margin-top: 40px; /* Margen superior */
+    background-color: #fff; /* Fondo blanco */
+    padding: 20px; /* Relleno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+/* Títulos dentro de la sección de observaciones */
+.observaciones h3 {
+    margin-top: 20px; /* Margen superior */
+    color: #1a2c42; /* Color oscuro */
+}
+
+/* Textareas dentro de la sección de observaciones */
+.observaciones textarea {
+    min-height: 80px; /* Altura mínima */
+}
+
+/* Sección de Escala de Calificación */
+.escala-calificacion {
+    margin-top: 40px; /* Margen superior */
+    padding: 15px; /* Relleno */
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+/* Listas dentro de la escala de calificación */
+.escala-calificacion ul {
+    padding-left: 20px; /* Relleno izquierdo para la lista */
+}
+
+/* Elementos de lista dentro de la escala de calificación */
+.escala-calificacion li {
+    margin-bottom: 10px; /* Margen inferior entre elementos de la lista */
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+    .flex-container {
+        flex-direction: column; /* Apilar elementos en columnas en pantallas pequeñas */
+    }
+
+    .flex-item {
+        min-width: 100%; /* Ocupar todo el ancho disponible */
+    }
+
+    /* Ajustes para tablas en pantallas pequeñas */
+    table {
+        white-space: normal; /* Permitir que el texto se envuelva */
+        table-layout: auto; /* Ajustar automáticamente el ancho de las columnas */
+    }
+
+    th, td {
+        padding: 6px; /* Reducir padding en celdas */
+    }
+
+    th.col-criterio, th.col-peso, th.col-calificacion, th.col-ponderado, th.col-observaciones {
+        width: auto; /* Permitir que las columnas se ajusten automáticamente */
+    }
+}
+
+/* Estilos para impresión (media query) */
+@media print {
+    body {
+        margin: 0; /* Sin margen en impresión */
+        padding: 15px; /* Relleno */
+        background: #fff; /* Fondo blanco */
+    }
+    
+    /* Ocultar elementos no deseados en la impresión */
+    .botones-accion, 
+    .modal, 
+    #guias-calificacion,
+    button,
+    .na-container,
+    .help-text,
+    .main-header .logo-placeholder { /* Ocultar el logo en la impresión */
+        display: none !important; /* Ocultar con alta prioridad */
+    }
+    
+    /* Bordes para tablas en impresión */
+    table, th, td {
+        border: 1px solid #aaa; /* Bordes más oscuros */
+    }
+    
+    /* Color de títulos en impresión */
+    h1, h2, h3 {
+        color: #000; /* Color negro */
+    }
+
+    /* Asegurar que el título principal de la evaluación se muestre */
+    .main-header h1 {
+        display: block !important;
+        color: #000 !important;
+        font-size: 1.8em !important;
+        text-align: center !important;
+        margin-top: 0 !important;
+    }
+    
+    /* Evitar saltos de página dentro de la escala de calificación */
+    .escala-calificacion {
+        page-break-inside: avoid;
+    }
+    
+    /* Márgenes de página en impresión */
+    @page {
+        margin: 1.5cm; /* Márgenes para la página impresa */
+    }
+}

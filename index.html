@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Proveedor de TI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="logo-placeholder">
+            <img src="https://sura.cdn.modyo.com/uploads/91b8fef8-398e-420e-a231-2c06f883f830/original/sura-logo.svg" alt="Company Logo" class="company-logo">
+        </div>
+        <h1>Plantilla de Evaluación para Proveedor de TI</h1>
+    </header>
+
+    <div class="help-text">
+        <strong>Nota sobre Criterios No Aplicables:</strong> Para los criterios que no aplican en el período de
+        evaluación (como parches cuando no hay actualizaciones programadas), utilice la casilla "No Aplicable". Esto
+        excluirá el criterio del cálculo y redistribuirá su peso entre los demás criterios de la sección.
+    </div>
+
+    <div class="help-text standards-note">
+        <strong>Nota sobre la Metodología:</strong> Los criterios y categorías de esta plantilla han sido mejorados y
+        alineados con las mejores prácticas de gestión de servicios de TI y seguridad de la información, inspirándose en
+        estándares reconocidos como el **Marco de Ciberseguridad del NIST** (National Institute of Standards and Technology)
+        y las directrices de **ISO/IEC 27001** (Sistemas de Gestión de la Seguridad de la Información) e **ISO 9001**
+        (Sistemas de Gestión de la Calidad).
+    </div>
+
+    <div>
+        <h2>Datos Generales</h2>
+        <table>
+            <tr>
+                <td><strong>Nombre del Proveedor:</strong></td>
+                <td><input type="text" id="proveedor" placeholder="Ingrese nombre del proveedor"></td>
+            </tr>
+            <tr>
+                <td><strong>Período de Evaluación:</strong></td>
+                <td><input type="text" id="periodo" placeholder="Ej: Enero - Marzo 2025"></td>
+            </tr>
+            <tr>
+                <td><strong>Responsable de la Evaluación:</strong></td>
+                <td><input type="text" id="responsable" placeholder="Ingrese nombre del responsable"></td>
+            </tr>
+            <tr>
+                <td><strong>Fecha de Evaluación:</strong></td>
+                <td><input type="date" id="fecha-evaluacion"></td>
+            </tr>          
+        </table>
+    </div>
+
+    <div>
+        <h2>Parámetros de Evaluación</h2>
+        <div class="flex-container">
+            <div class="flex-item">         
+                <h3>Tiempos de Respuesta Acordados (SLA)</h3>
+                <table>
+                    <tr>
+                        <th>Prioridad</th>
+                        <th>Tiempo Acordado</th>
+                        <th>Valor Actual</th>
+                    </tr>
+                    <tr>
+                        <td>Crítica</td>
+                        <td><input type="text" id="sla-critica" placeholder="Ej: 1,5 horas"></td>
+                        <td><input type="text" id="actual-critica" placeholder="Ej: 0,75 horas"></td>
+                    </tr>
+                    <tr>
+                        <td>Alta</td>
+                        <td><input type="text" id="sla-alta" placeholder="Ej: 4,0 horas"></td>
+                        <td><input type="text" id="actual-alta" placeholder="Ej: 3,5 horas"></td>
+                    </tr>
+                    <tr>
+                        <td>Media</td>
+                        <td><input type="text" id="sla-media" placeholder="Ej: 8,0 horas"></td>
+                        <td><input type="text" id="actual-media" placeholder="Ej: 7,0 horas"></td>
+                    </tr>
+                    <tr>
+                        <td>Baja</td>
+                        <td><input type="text" id="sla-baja" placeholder="Ej: 24,0 horas"></td>
+                        <td><input type="text" id="actual-baja" placeholder="Ej: 20,0 horas"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="flex-item">
+                <h3>Estadísticas de Tickets</h3>
+                <table>
+                    <tr>
+                        <th>Métricas</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Total de tickets abiertos</td>
+                        <td><input type="number" id="tickets-abiertos" min="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Total de tickets resueltos</td>
+                        <td><input type="number" id="tickets-resueltos" min="0"></td>
+                    </tr>
+                    <tr>
+                        <td>% de resolución</td>
+                        <td><input type="text" id="porcentaje-resolucion" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Tickets reabiertos</td>
+                        <td><input type="number" id="tickets-reabiertos" min="0"></td>
+                    </tr>
+                    <tr>
+                        <td>% de reapertura</td>
+                        <td><input type="text" id="porcentaje-reapertura" readonly></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <h3>Ayuda para Calificación Automática</h3>
+            <p>Puede utilizar el botón "Sugerir Calificaciones" para calcular automáticamente las calificaciones en base
+                a los parámetros ingresados arriba.</p>
+            <button class="btn" id="sugerir-calificaciones">Sugerir Calificaciones</button>
+        </div>
+    </div>
+
+    <div id="guias-calificacion">
+        <h2>Guías de Calificación por Criterio</h2>
+
+        <div class="guias-container">
+            <h3>1. Cumplimiento de SLAs</h3>
+            <table>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Calificación 1</th>
+                    <th>Calificación 2</th>
+                    <th>Calificación 3</th>
+                    <th>Calificación 4</th>
+                    <th>Calificación 5</th>
+                </tr>
+                <tr>
+                    <td>Tiempo de respuesta a incidentes críticos</td>
+                    <td>>150% del SLA acordado</td>
+                    <td>101-150% del SLA</td>
+                    <td>90-100% del SLA</td>
+                    <td>70-89% del SLA</td>
+                    <td>
+                        <70% del SLA</td>
+                </tr>
+                <tr>
+                    <td>Tiempo de resolución de problemas</td>
+                    <td>>150% del SLA acordado</td>
+                    <td>101-150% del SLA</td>
+                    <td>90-100% del SLA</td>
+                    <td>70-89% del SLA</td>
+                    <td>
+                        <70% del SLA</td>
+                </tr>
+                <tr>
+                    <td>Disponibilidad del servicio (uptime)</td>
+                    <td>
+                        <98%</td>
+                    <td>98-98.9%</td>
+                    <td>99-99.5%</td>
+                    <td>99.6-99.8%</td>
+                    <td>>99.8%</td>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de mantenimientos programados</td>
+                    <td>>5 días de retraso</td>
+                    <td>3-5 días de retraso</td>
+                    <td>1-2 días de retraso</td>
+                    <td>En fecha acordada</td>
+                    <td>Anticipado con plan</td>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de RTO/RPO (Recuperación)</td>
+                    <td>>150% del RTO/RPO</td>
+                    <td>101-150% del RTO/RPO</td>
+                    <td>90-100% del RTO/RPO</td>
+                    <td>70-89% del RTO/RPO</td>
+                    <td>
+                        <70% del RTO/RPO</td>
+                </tr>
+                <tr>
+                    <td>Adherencia a Ventanas de Cambio</td>
+                    <td>>10% fuera de ventana</td>
+                    <td>5-10% fuera de ventana</td>
+                    <td>1-4% fuera de ventana</td>
+                    <td>0% fuera de ventana</td>
+                    <td>Anticipado con aprobación</td>
+                </tr>
+            </table>
+
+            <h3>2. Gestión de Tickets e Incidentes</h3>
+            <table>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Calificación 1</th>
+                    <th>Calificación 2</th>
+                    <th>Calificación 3</th>
+                    <th>Calificación 4</th>
+                    <th>Calificación 5</th>
+                </tr>
+                <tr>
+                    <td>Cantidad de tickets resueltos vs. pendientes</td>
+                    <td>
+                        <60% resueltos</td>
+                    <td>60-74% resueltos</td>
+                    <td>75-84% resueltos</td>
+                    <td>85-94% resueltos</td>
+                    <td>≥95% resueltos</td>
+                </tr>
+                <tr>
+                    <td>Tiempo promedio de resolución</td>
+                    <td>>150% del promedio acordado</td>
+                    <td>120-150% del promedio</td>
+                    <td>100-119% del promedio</td>
+                    <td>80-99% del promedio</td>
+                    <td>
+                        <80% del promedio</td>
+                </tr>
+                <tr>
+                    <td>Calidad de la documentación de incidentes</td>
+                    <td>Mínima o ausente</td>
+                    <td>Básica, con omisiones</td>
+                    <td>Completa pero básica</td>
+                    <td>Detallada y clara</td>
+                    <td>Exhaustiva con análisis</td>
+                </tr>
+                <tr>
+                    <td>Efectividad en la resolución (sin reaperturas)</td>
+                    <td>>30% reabiertos</td>
+                    <td>20-30% reabiertos</td>
+                    <td>10-19% reabiertos</td>
+                    <td>5-9% reabiertos</td>
+                    <td>
+                        <5% reabiertos</td>
+                </tr>
+                <tr>
+                    <td>Comunicación proactiva sobre el estado de tickets</td>
+                    <td>Casi nula o reactiva</td>
+                    <td>Básica y a demanda</td>
+                    <td>Regular y a tiempo</td>
+                    <td>Buena y proactiva</td>
+                    <td>Excelente y anticipatoria</td>
+                </tr>
+                <tr>
+                    <td>Clasificación y Priorización de Incidentes</td>
+                    <td>Frecuentes errores o inconsistencias</td>
+                    <td>Algunos errores, mejora necesaria</td>
+                    <td>Generalmente correcta</td>
+                    <td>Muy precisa y consistente</td>
+                    <td>Excepcional, alineada a políticas</td>
+                </tr>
+                <tr>
+                    <td>Análisis Causa Raíz (RCA) y Prevención</td>
+                    <td>No se realizan o son ineficaces</td>
+                    <td>Se realizan pero sin impacto</td>
+                    <td>Básicos, con impacto limitado</td>
+                    <td>Detallados, con impacto notable</td>
+                    <td>Exhaustivos, con prevención efectiva</td>
+                </tr>
+            </table>
+
+            <h3>3. Calidad del Servicio</h3>
+            <table>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Calificación 1</th>
+                    <th>Calificación 2</th>
+                    <th>Calificación 3</th>
+                    <th>Calificación 4</th>
+                    <th>Calificación 5</th>
+                </tr>
+                <tr>
+                    <td>Satisfacción de usuarios finales</td>
+                    <td>
+                        <60% satisfacción</td>
+                    <td>60-69% satisfacción</td>
+                    <td>70-79% satisfacción</td>
+                    <td>80-89% satisfacción</td>
+                    <td>≥90% satisfacción</td>
+                </tr>
+                <tr>
+                    <td>Efectividad de las soluciones</td>
+                    <td>>25% requirieron revisión</td>
+                    <td>15-25% requirieron revisión</td>
+                    <td>10-14% requirieron revisión</td>
+                    <td>5-9% requirieron revisión</td>
+                    <td>
+                        <5% requirieron revisión</td>
+                </tr>
+                <tr>
+                    <td>Proactividad en la identificación de problemas</td>
+                    <td>No hay proactividad</td>
+                    <td>Poca proactividad, reactivo</td>
+                    <td>Identifica algunos problemas</td>
+                    <td>Proactivo en identificar problemas</td>
+                    <td>Altamente proactivo y preventivo</td>
+                </tr>
+                <tr>
+                    <td>Conocimiento del Negocio/Contexto</td>
+                    <td>Bajo o nulo</td>
+                    <td>Limitado, requiere guía constante</td>
+                    <td>Aceptable, comprende lo básico</td>
+                    <td>Bueno, aplica al contexto</td>
+                    <td>Profundo, anticipa necesidades</td>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de Requisitos No Funcionales</td>
+                    <td>No cumple o impacta negativamente</td>
+                    <td>Cumple mínimamente, con fallos</td>
+                    <td>Cumple lo básico, con mejoras</td>
+                    <td>Cumple bien, con buen rendimiento</td>
+                    <td>Supera expectativas, excelente rendimiento</td>
+                </tr>
+            </table>
+
+            <h3>4. Gestión de la Seguridad</h3>
+            <table>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Calificación 1</th>
+                    <th>Calificación 2</th>
+                    <th>Calificación 3</th>
+                    <th>Calificación 4</th>
+                    <th>Calificación 5</th>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de políticas de seguridad</td>
+                    <td>
+                        <60% cumplimiento</td>
+                    <td>60-79% cumplimiento</td>
+                    <td>80-89% cumplimiento</td>
+                    <td>90-95% cumplimiento</td>
+                    <td>>95% cumplimiento</td>
+                </tr>
+                <tr>
+                    <td>Gestión de vulnerabilidades y parches</td>
+                    <td>>30 días de retraso</td>
+                    <td>16-30 días de retraso</td>
+                    <td>7-15 días de retraso</td>
+                    <td>1-6 días de retraso</td>
+                    <td>En fecha o anticipado</td>
+                </tr>
+                <tr>
+                    <td>Gestión de Incidentes de Seguridad</td>
+                    <td>≥5 graves o sin gestión</td>
+                    <td>3-4 graves o gestión tardía</td>
+                    <td>1-2 graves con gestión</td>
+                    <td>Solo incidentes menores bien gestionados</td>
+                    <td>Sin incidentes relevantes o gestión ejemplar</td>
+                </tr>
+                <tr>
+                    <td>Conciencia y Capacitación en Seguridad</td>
+                    <td>No hay capacitación</td>
+                    <td>Capacitación mínima o desactualizada</td>
+                    <td>Capacitación básica regular</td>
+                    <td>Buena capacitación, personal consciente</td>
+                    <td>Excelente capacitación, cultura de seguridad</td>
+                </tr>
+            </table>
+
+            <h3>5. Innovación y Mejora Continua</h3>
+            <table>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Calificación 1</th>
+                    <th>Calificación 2</th>
+                    <th>Calificación 3</th>
+                    <th>Calificación 4</th>
+                    <th>Calificación 5</th>
+                </tr>
+                <tr>
+                    <td>Propuestas de mejora presentadas</td>
+                    <td>0 propuestas</td>
+                    <td>1 propuesta básica</td>
+                    <td>1-2 propuestas sólidas</td>
+                    <td>3-4 propuestas valiosas</td>
+                    <td>≥5 propuestas valiosas</td>
+                </tr>
+                <tr>
+                    <td>Implementación de nuevas tecnologías</td>
+                    <td>0 implementaciones</td>
+                    <td>Planificación sin implementación</td>
+                    <td>1 implementación menor</td>
+                    <td>1 implementación significativa</td>
+                    <td>≥2 implementaciones valiosas</td>
+                </tr>
+                <tr>
+                    <td>Capacitación y actualización del equipo</td>
+                    <td>Nula o muy deficiente</td>
+                    <td>Básica, sin plan</td>
+                    <td>Regular, con plan limitado</td>
+                    <td>Buena, con plan estructurado</td>
+                    <td>Excelente, proactiva y continua</td>
+                </tr>
+                <tr>
+                    <td>Adaptabilidad a cambios en requisitos</td>
+                    <td>Muy baja o resistente</td>
+                    <td>Lenta y con dificultades</td>
+                    <td>Aceptable, con algunos ajustes</td>
+                    <td>Buena, se adapta con facilidad</td>
+                    <td>Excelente, proactiva a los cambios</td>
+                </tr>
+                <tr>
+                    <td>Participación en Revisiones de Servicio</td>
+                    <td>Pasiva o ausente</td>
+                    <td>Básica, solo reporta</td>
+                    <td>Activa, aporta ideas</td>
+                    <td>Muy activa, con soluciones</td>
+                    <td>Líder, impulsa la mejora</td>
+                </tr>
+                <tr>
+                    <td>Mecanismos de Feedback y Lecciones Aprendidas</td>
+                    <td>No existen o no se usan</td>
+                    <td>Rudimentarios, poco efectivos</td>
+                    <td>Existen, uso inconsistente</td>
+                    <td>Efectivos, se usan regularmente</td>
+                    <td>Integrados, impulsan la mejora continua</td>
+                </tr>
+            </table>
+
+            <h3>6. Gestión Administrativa y Contractual</h3>
+            <table>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Calificación 1</th>
+                    <th>Calificación 2</th>
+                    <th>Calificación 3</th>
+                    <th>Calificación 4</th>
+                    <th>Calificación 5</th>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de entregables documentales</td>
+                    <td>>10 días de retraso</td>
+                    <td>6-10 días de retraso</td>
+                    <td>3-5 días de retraso</td>
+                    <td>1-2 días de retraso</td>
+                    <td>En fecha o anticipado</td>
+                </tr>
+                <tr>
+                    <td>Facturación clara y oportuna</td>
+                    <td>Con errores y retrasos</td>
+                    <td>Oportuna con errores</td>
+                    <td>Clara con algún retraso</td>
+                    <td>Clara y oportuna</td>
+                    <td>Excelente con detalles adicionales</td>
+                </tr>
+                <tr>
+                    <td>Gestión de cambios contractuales</td>
+                    <td>No gestiona o con graves problemas</td>
+                    <td>Lenta o con errores frecuentes</td>
+                    <td>Aceptable, con algunos ajustes</td>
+                    <td>Buena, eficiente y documentada</td>
+                    <td>Excelente, proactiva y sin fricciones</td>
+                </tr>
+                <tr>
+                    <td>Comunicación y reportes gerenciales</td>
+                    <td>Sin reportes o inválidos</td>
+                    <td>Reportes básicos con retraso</td>
+                    <td>Reportes completos con algún retraso</td>
+                    <td>Reportes completos y puntuales</td>
+                    <td>Reportes excepcionales con análisis</td>
+                </tr>
+                <tr>
+                    <td>Gestión de Subcontratistas (si aplica)</td>
+                    <td>No hay gestión o es deficiente</td>
+                    <td>Gestión básica, con riesgos</td>
+                    <td>Aceptable, con supervisión</td>
+                    <td>Buena, con control y auditoría</td>
+                    <td>Excelente, integrada y segura</td>
+                </tr>
+                <tr>
+                    <td>Transparencia y Acceso a Información</td>
+                    <td>Nula o muy limitada</td>
+                    <td>Limitada, requiere esfuerzo</td>
+                    <td>Aceptable, con acceso razonable</td>
+                    <td>Buena, fácil acceso y proactiva</td>
+                    <td>Total, con auditorías abiertas</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="flex-container">
+        <div class="flex-item">
+            <h2>1. Cumplimiento de Acuerdos de Nivel de Servicio (SLA) - 25%</h2>
+            <table id="seccion1">
+                <tr>
+                    <th class="col-criterio">Criterio</th>
+                    <th class="col-peso">Peso</th>
+                    <th class="col-calificacion">Calificación (1-5)</th>
+                    <th class="col-ponderado">Ponderado</th>
+                    <th class="col-observaciones">Observaciones</th>
+                </tr>
+                <tr>
+                    <td>Tiempo de respuesta a incidentes críticos</td>
+                    <td>6%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.06">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>     
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Tiempo de resolución de problemas</td>
+                    <td>6%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.06">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Disponibilidad del servicio (uptime)</td>
+                    <td>5%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.05">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de mantenimientos programados</td>
+                    <td>3%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.03">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de RTO/RPO (Recuperación)</td>
+                    <td>3%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.03">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Adherencia a Ventanas de Cambio</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr class="resultado">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>25%</strong></td>
+                    <td></td>
+                    <td class="subtotal">0</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="flex-item">
+            <h2>2. Gestión de Tickets e Incidentes - 20%</h2>
+            <table id="seccion2">
+                <tr>
+                    <th class="col-criterio">Criterio</th>
+                    <th class="col-peso">Peso</th>
+                    <th class="col-calificacion">Calificación (1-5)</th>
+                    <th class="col-ponderado">Ponderado</th>
+                    <th class="col-observaciones">Observaciones</th>
+                </tr>
+                <tr>
+                    <td>Cantidad de tickets resueltos vs. pendientes</td>
+                    <td>4%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.04">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Tiempo promedio de resolución</td>
+                    <td>4%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.04">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Calidad de la documentación de incidentes</td>
+                    <td>3%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.03">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Efectividad en la resolución (sin reaperturas)</td>
+                    <td>3%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.03">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Comunicación proactiva sobre el estado de tickets</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Clasificación y Priorización de Incidentes</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Análisis Causa Raíz (RCA) y Prevención</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr class="resultado">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>20%</strong></td>
+                    <td></td>
+                    <td class="subtotal">0</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="flex-container">
+        <div class="flex-item">
+            <h2>3. Calidad del Servicio - 20%</h2>
+            <table id="seccion3">
+                <tr>
+                    <th class="col-criterio">Criterio</th>
+                    <th class="col-peso">Peso</th>
+                    <th class="col-calificacion">Calificación (1-5)</th>
+                    <th class="col-ponderado">Ponderado</th>
+                    <th class="col-observaciones">Observaciones</th>
+                </tr>
+                <tr>
+                    <td>Satisfacción de usuarios finales</td>
+                    <td>6%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.06">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Efectividad de las soluciones</td>
+                    <td>4%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.04">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Proactividad en la identificación de problemas</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Conocimiento del Negocio/Contexto</td>
+                    <td>4%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.04">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de Requisitos No Funcionales</td>
+                    <td>4%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.04">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr class="resultado">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>20%</strong></td>
+                    <td></td>
+                    <td class="subtotal">0</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="flex-item">
+            <h2>4. Gestión de la Seguridad - 15%</h2>
+            <table id="seccion4">
+                <tr>
+                    <th class="col-criterio">Criterio</th>
+                    <th class="col-peso">Peso</th>
+                    <th class="col-calificacion">Calificación (1-5)</th>
+                    <th class="col-ponderado">Ponderado</th>
+                    <th class="col-observaciones">Observaciones</th>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de políticas de seguridad</td>
+                    <td>6%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.06">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Gestión de vulnerabilidades y parches</td>
+                    <td>4%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.04">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Gestión de Incidentes de Seguridad</td>
+                    <td>4%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.04">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Conciencia y Capacitación en Seguridad</td>
+                    <td>1%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.01">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr class="resultado">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>15%</strong></td>
+                    <td></td>
+                    <td class="subtotal">0</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="flex-container">
+        <div class="flex-item">
+            <h2>5. Innovación y Mejora Continua - 10%</h2>
+            <table id="seccion5">
+                <tr>
+                    <th class="col-criterio">Criterio</th>
+                    <th class="col-peso">Peso</th>
+                    <th class="col-calificacion">Calificación (1-5)</th>
+                    <th class="col-ponderado">Ponderado</th>
+                    <th class="col-observaciones">Observaciones</th>
+                </tr>
+                <tr>
+                    <td>Propuestas de mejora presentadas</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Implementación de nuevas tecnologías</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Capacitación y actualización del equipo</td>
+                    <td>1%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.01">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Adaptabilidad a cambios en requisitos</td>
+                    <td>1%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.01">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Participación en Revisiones de Servicio</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Mecanismos de Feedback y Lecciones Aprendidas</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr class="resultado">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>10%</strong></td>
+                    <td></td>
+                    <td class="subtotal">0</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="flex-item">
+            <h2>6. Gestión Administrativa y Contractual - 10%</h2>
+            <table id="seccion6">
+                <tr>
+                    <th class="col-criterio">Criterio</th>
+                    <th class="col-peso">Peso</th>
+                    <th class="col-calificacion">Calificación (1-5)</th>
+                    <th class="col-ponderado">Ponderado</th>
+                    <th class="col-observaciones">Observaciones</th>
+                </tr>
+                <tr>
+                    <td>Cumplimiento de entregables documentales</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Facturación clara y oportuna</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Gestión de cambios contractuales</td>
+                    <td>1%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.01">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Comunicación y reportes gerenciales</td>
+                    <td>1%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.01">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Gestión de Subcontratistas (si aplica)</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr>
+                    <td>Transparencia y Acceso a Información</td>
+                    <td>2%</td>
+                    <td>
+                        <div class="calificacion-container">
+                            <input type="number" min="1" max="5" class="calificacion" data-peso="0.02">
+                            <div class="na-container">
+                                <label><input type="checkbox" class="na-check"> N/A</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ponderado">0</td>
+                    <td><input type="text" class="obs"></td>
+                </tr>
+                <tr class="resultado">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>10%</strong></td>
+                    <td></td>
+                    <td class="subtotal">0</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <h2>Resultados Finales</h2>
+        <table id="resultados-finales">
+            <tr>
+                <th>Sección</th>
+                <th>Peso</th>
+                <th>Puntaje Ponderado</th>
+                <th>Calificación</th>
+            </tr>
+            <tr>
+                <td>1. Cumplimiento de SLAs</td>
+                <td>25%</td>
+                <td class="seccion-resultado" id="resultado-seccion1">0</td>
+                <td class="calificacion-texto" id="cal-seccion1"></td>
+            </tr>
+            <tr>
+                <td>2. Gestión de Tickets</td>
+                <td>20%</td>
+                <td class="seccion-resultado" id="resultado-seccion2">0</td>
+                <td class="calificacion-texto" id="cal-seccion2"></td>
+            </tr>
+            <tr>
+                <td>3. Calidad del Servicio</td>
+                <td>20%</td>
+                <td class="seccion-resultado" id="resultado-seccion3">0</td>
+                <td class="calificacion-texto" id="cal-seccion3"></td>
+            </tr>
+            <tr>
+                <td>4. Gestión de la Seguridad</td>
+                <td>15%</td>
+                <td class="seccion-resultado" id="resultado-seccion4">0</td>
+                <td class="calificacion-texto" id="cal-seccion4"></td>
+            </tr>
+            <tr>
+                <td>5. Innovación y Mejora</td>
+                <td>10%</td>
+                <td class="seccion-resultado" id="resultado-seccion5">0</td>
+                <td class="calificacion-texto" id="cal-seccion5"></td>
+            </tr>
+            <tr>
+                <td>6. Gestión Administrativa</td>
+                <td>10%</td>
+                <td class="seccion-resultado" id="resultado-seccion6">0</td>
+                <td class="calificacion-texto" id="cal-seccion6"></td>
+            </tr>
+            <tr class="resultado">
+                <td><strong>CALIFICACIÓN TOTAL</strong></td>
+                <td><strong>100%</strong></td>
+                <td id="total-ponderado"><strong>0</strong></td>
+                <td id="calificacion-global"><strong>Deficiente</strong></td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h2>Análisis de Métricas Clave</h2>
+        <table>
+            <tr>
+                <td><strong>Tiempo promedio de respuesta:</strong></td>
+                <td><input type="text" id="tiempo-respuesta" placeholder="Ej: 4,0 horas"></td>
+            </tr>
+            <tr>
+                <td><strong>Tiempo promedio de resolución:</strong></td>
+                <td><input type="text" id="tiempo-resolucion" placeholder="Ej: 2,5 días"></td>
+            </tr>
+            <tr>
+                <td><strong>% de uptime del servicio:</strong></td>
+                <td><input type="text" id="uptime" placeholder="Ej: 99.5%"></td>
+            </tr>
+            <tr>
+                <td><strong>% de tickets resueltos dentro del SLA:</strong></td>
+                <td><input type="text" id="tickets-sla" placeholder="Ej: 92%"></td>
+            </tr>
+            <tr>
+                <td><strong>Número de incidentes críticos:</strong></td>
+                <td><input type="text" id="incidentes-criticos" placeholder="Ej: 3"></td>
+            </tr>
+            <tr>
+                <td><strong>Satisfacción promedio del usuario (1-5):</strong></td>
+                <td><input type="text" id="satisfaccion" placeholder="Ej: 4.2"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="observaciones">
+        <h2>Observaciones Generales y Plan de Acción</h2>
+
+        <h3>Fortalezas identificadas:</h3>
+        <textarea id="fortalezas" rows="5" placeholder="Ingrese las principales fortalezas identificadas..."></textarea>
+
+        <h3>Áreas de mejora:</h3>
+        <textarea id="areas-mejora" rows="5" placeholder="Ingrese las principales áreas de mejora..."></textarea>
+
+        <h3>Plan de acción recomendado:</h3>
+        <textarea id="plan-accion" rows="5" placeholder="Ingrese las acciones recomendadas..."></textarea>
+
+        <h3>Fecha de próxima evaluación:</h3>
+        <input type="date" id="proxima-evaluacion">
+    </div>
+
+    <div class="botones-accion">
+        <button class="btn" id="calcular">Calcular Resultados</button>
+        <button class="btn" id="abrir-calculadora">Abrir Calculadora de Calificación</button> <button class="btn btn-export" id="exportar-csv">Exportar a CSV</button>
+        <button class="btn" id="imprimir">Imprimir Evaluación</button>
+        <button class="btn" id="toggleGuias">Mostrar/Ocultar Guías de Calificación</button>
+    </div>
+
+    <div id="calculadoraModal" class="modal">
+        <div class="modal-content">
+            <span class="cerrar-modal" id="cerrarModal">&times;</span>
+            <h3>Calculadora de Calificación</h3>
+
+            <div>
+                <label for="criterio-select">Seleccione un criterio:</label>
+                <select id="criterio-select">
+                    <option value="">-- Seleccione un criterio --</option>
+                    <option value="tiempo-respuesta">Tiempo de respuesta a incidentes críticos</option>
+                    <option value="resolucion-problemas">Tiempo de resolución de problemas</option>
+                    <option value="uptime">Disponibilidad del servicio (uptime)</option>
+                    <option value="tickets-resueltos">Cantidad de tickets resueltos vs. pendientes</option>
+                    <option value="entregables">Cumplimiento de entregables documentales</option>
+                    <option value="rto-rpo">Cumplimiento de RTO/RPO (Recuperación)</option>
+                    <option value="ventanas-cambio">Adherencia a Ventanas de Cambio</option>
+                    <option value="clasificacion-incidentes">Clasificación y Priorización de Incidentes</option>
+                    <option value="rca-prevencion">Análisis Causa Raíz (RCA) y Prevención</option>
+                    <option value="conocimiento-negocio">Conocimiento del Negocio/Contexto</option>
+                    <option value="requisitos-no-funcionales">Cumplimiento de Requisitos No Funcionales</soption>
+                    <option value="conciencia-seguridad">Conciencia y Capacitación en Seguridad</option>
+                    <option value="revisiones-servicio">Participación en Revisiones de Servicio</option>
+                    <option value="feedback-lecciones">Mecanismos de Feedback y Lecciones Aprendidas</option>
+                    <option value="subcontratistas">Gestión de Subcontratistas</option>
+                    <option value="transparencia">Transparencia y Acceso a Información</option>
+                </select>
+            </div>
+
+            <div id="calc-form">
+                </div>
+
+            <div class="resultado-calc">
+                <h4>Resultado:</h4>
+                <div id="calc-resultado">
+                    Seleccione un criterio y complete los datos para ver el resultado
+                </div>
+            </div>
+
+            <button class="btn" id="aplicar-calificacion">Aplicar esta calificación</button>
+        </div>
+    </div>
+
+    <div class="escala-calificacion">
+        <h3>Escala de Calificación:</h3>
+        <ul>
+            <li><strong>1 - Deficiente</strong> - Incumplimiento severo (0-20%)</li>
+            <li><strong>2 - Regular</strong> - Cumplimiento parcial con deficiencias significativas (21-40%)</li>
+            <li><strong>3 - Aceptable</strong> - Cumplimiento básico de lo requerido (41-60%)</li>
+            <li><strong>4 - Bueno</strong> - Cumplimiento con algunas mejoras (61-80%)</li>
+            <li><strong>5 - Excelente</strong> - Cumplimiento superior a lo esperado (81-100%)</li>
+        </ul>
+    </div>
+
+    <script src="js/evaluacion.js"></script>
+</body>
+
+</html>
